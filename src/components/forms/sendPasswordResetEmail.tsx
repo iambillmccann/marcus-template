@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "@/lib/firebase";
-import { toast } from "sonner"; // For notifications
+import { toast } from "sonner";
 
 interface ForgotPasswordFormValues {
     email: string;
 }
 
-export function ForgotPasswordForm() {
+export function ForgotPasswordForm({ onBack }: { onBack: () => void }) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const form = useForm<ForgotPasswordFormValues>({
         defaultValues: {
@@ -25,6 +25,7 @@ export function ForgotPasswordForm() {
         try {
             await sendPasswordResetEmail(auth, values.email);
             toast.success("Password reset email sent. Please check your inbox.");
+            onBack(); // Return to login form after success
         } catch (error: unknown) {
             toast.error("Failed to send password reset email. Please try again.");
             console.error("Password reset error:", error);
@@ -38,7 +39,7 @@ export function ForgotPasswordForm() {
             onSubmit={form.handleSubmit(handlePasswordReset)}
             className="space-y-4 w-full max-w-sm mx-auto"
         >
-            <h1 className="text-2xl font-semibold text-left">Reset your fucking password</h1>
+            <h1 className="text-2xl font-semibold text-left">Reset your password</h1>
             <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Email
@@ -54,8 +55,17 @@ export function ForgotPasswordForm() {
                 )}
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Reset fucking password"}
+                {isSubmitting ? "Sending..." : "Reset password"}
             </Button>
+            <div className="mt-2 text-left">
+                <button
+                    type="button"
+                    onClick={onBack}
+                    className="text-sm text-blue-500 hover:underline"
+                >
+                    Back to sign in
+                </button>
+            </div>
         </form>
     );
 }
