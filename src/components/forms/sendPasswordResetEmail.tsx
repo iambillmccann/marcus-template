@@ -38,7 +38,7 @@ export function ForgotPasswordForm() {
             onSubmit={form.handleSubmit(handlePasswordReset)}
             className="space-y-4 w-full max-w-sm mx-auto"
         >
-            <h1 className="text-2xl font-semibold text-center">Reset your password</h1>
+            <h1 className="text-2xl font-semibold text-left">Reset your fucking password</h1>
             <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
                     Email
@@ -54,7 +54,7 @@ export function ForgotPasswordForm() {
                 )}
             </div>
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Reset password"}
+                {isSubmitting ? "Sending..." : "Reset fucking password"}
             </Button>
         </form>
     );

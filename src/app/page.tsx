@@ -10,6 +10,7 @@ export default function LandingPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [showLogin, setShowLogin] = useState(true); // State to toggle between forms
+  const [hideHeader, setHideHeader] = useState(false); // State to hide header text
 
   useEffect(() => {
     if (!loading && user) {
@@ -23,27 +24,36 @@ export default function LandingPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-md px-6"> {/* Shared container with consistent padding */}
+      <div className="w-full max-w-md px-6">
         {showLogin ? (
           <>
-            {/* Form Label */}
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Sign in
-            </h1>
+            {/* Conditionally hide the header */}
+            {!hideHeader && (
+              <>
+                {/* Form Label */}
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                  Sign in
+                </h1>
 
-            {/* Helper Text */}
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              New to this app?{" "}
-              <button
-                onClick={() => setShowLogin(false)}
-                className="text-blue-500 hover:underline"
-              >
-                Sign up for an account
-              </button>
-            </p>
+                {/* Helper Text */}
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">
+                  New to this app?{" "}
+                  <button
+                    onClick={() => setShowLogin(false)}
+                    className="text-blue-500 hover:underline"
+                  >
+                    Sign up for an account
+                  </button>
+                </p>
+              </>
+            )}
 
             {/* Login Form */}
-            <LoginForm onLogin={() => router.push("/home")} />
+            <LoginForm
+              onLogin={() => router.push("/home")}
+              onForgotPassword={() => setHideHeader(true)} // Hide header when "Forgot password?" is clicked
+              onBackToLogin={() => setHideHeader(false)} // Show header when returning to login
+            />
           </>
         ) : (
           <>
