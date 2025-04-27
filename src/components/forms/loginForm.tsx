@@ -155,6 +155,13 @@ export function LoginForm({ onLogin }: { onLogin: () => void }) {
                     )}
                 />
 
+                {/* Forgot Password Link */}
+                <div className="mt-2 text-right">
+                    <a href="/forgot-password" className="text-sm text-blue-500 hover:underline">
+                        Forgot password?
+                    </a>
+                </div>
+
                 <Button type="submit" className="w-full">
                     Log In
                 </Button>
