@@ -4,6 +4,12 @@ import { ReactNode, useState } from "react";
 import TopBanner from "@/components/topBanner"; // Import the TopBanner component
 import SidePanel from "@/components/sidePanel"; // Import the SidePanel component
 
+const menuItems = [
+    { name: "Home", href: "/home" },
+    { name: "Settings", href: "/home/settings" },
+    { name: "Background", href: "/home/background" },
+];
+
 export default function HomeLayout({ children }: { children: ReactNode }) {
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(true); // Default to true
 
@@ -21,12 +27,10 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
             {/* Main Layout */}
             <div className="flex flex-1">
                 {/* Side Navigation */}
-                <SidePanel isSidePanelOpen={isSidePanelOpen} />
+                <SidePanel isSidePanelOpen={isSidePanelOpen} menuItems={menuItems} />
 
                 {/* Main Content */}
-                <main className="flex-1 p-4">
-                    {children}
-                </main>
+                <main className="flex-1 p-4">{children}</main>
             </div>
         </div>
     );
