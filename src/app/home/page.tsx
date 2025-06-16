@@ -22,7 +22,7 @@ export default function HomePage() {
         <div className="flex items-center justify-center min-h-screen">
             <Card className="w-full max-w-md shadow-lg">
                 <CardHeader>
-                    <CardTitle>Marcus App Template</CardTitle>
+                    <CardTitle>The AI Resume Writer</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <CardDescription>
