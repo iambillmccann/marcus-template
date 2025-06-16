@@ -26,17 +26,17 @@ export default function RootLayout({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Marcus - A modern SaaS application template" />
-        <meta name="keywords" content="SaaS, Marcus, Template, Next.js" />
+        <meta name="description" content="The AI resume writer" />
+        <meta name="keywords" content="SaaS, Resume, ai, Next.js" />
         <meta name="author" content="Fourier Gauss Labs" />
-        <meta property="og:title" content="Marcus" />
-        <meta property="og:description" content="A modern SaaS application template" />
+        <meta property="og:title" content="Resume" />
+        <meta property="og:description" content="The AI resume writer" />
         <meta property="og:image" content="/logo.png" />
         <meta property="og:url" content="https://fouriergauss.com" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Marcus" />
-        <meta name="twitter:description" content="A modern SaaS application template" />
+        <meta name="twitter:title" content="Resume" />
+        <meta name="twitter:description" content="The AI resume writer" />
         <meta name="twitter:image" content="/logo.png" />
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link rel="apple-touch-icon" href="/logo.png" />

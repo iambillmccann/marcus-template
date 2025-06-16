@@ -48,7 +48,7 @@ describe("RootLayout", () => {
         // Check for meta tags
         expect(document.querySelector('meta[name="description"]')).toHaveAttribute(
             "content",
-            "Marcus - A modern SaaS application template"
+            "The AI resume writer"
         );
 
         // Check for providers and children

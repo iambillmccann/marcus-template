@@ -33,7 +33,7 @@ describe("HomePage", () => {
 
     it("renders the main card content when authenticated", () => {
         render(<HomePage />);
-        expect(screen.getByTestId("card-title")).toHaveTextContent("Marcus App Template");
+        expect(screen.getByTestId("card-title")).toHaveTextContent("The AI Resume Writer");
         const descriptions = screen.getAllByTestId("card-description");
         expect(descriptions[0]).toHaveTextContent("This app is a starter template for SaaS applications.");
         expect(descriptions[1]).toHaveTextContent("Copyright 2025 Fourier Gauss Labs");
