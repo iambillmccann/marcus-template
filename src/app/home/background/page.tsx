@@ -28,58 +28,44 @@ export default function BackgroundPage() {
   });
 
   const handleFileUpload = async (file: File) => {
-    console.log("Starting file upload...");
     if (!user) {
       toast.error("You must be logged in to upload files.");
-      console.log("User not logged in.");
       return;
     }
 
     if (!["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain", "text/markdown"].includes(file.type)) {
       toast.error("Invalid file type. Please upload a PDF, DOCX, TXT, or MD file.");
-      console.log("Invalid file type:", file.type);
       return;
     }
 
     if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
       toast.error(`File size exceeds ${MAX_FILE_SIZE_MB} MB. Please upload a smaller file.`);
-      console.log("File size exceeds limit:", file.size);
       return;
     }
 
     try {
       const storage = getStorage();
       const storageRef = ref(storage, `uploads/${user.uid}/${file.name}`);
-      console.log("Uploading file to storage...");
       await uploadBytes(storageRef, file);
-      console.log("File uploaded to storage.");
-
       const fileURL = await getDownloadURL(storageRef);
-      console.log("File URL retrieved:", fileURL);
 
       const db = getFirestore();
       const userRef = doc(db, "users", user.uid);
-      console.log("Saving file URL to Firestore...");
       await setDoc(
         userRef,
         { files: { [file.name]: fileURL } },
         { merge: true }
       );
-      console.log("File URL saved to Firestore.");
 
       toast.success("File uploaded successfully.");
     } catch (error) {
       console.error("Error uploading file:", error);
       const firebaseError = error as { code?: string; message?: string };
-      console.error("Firebase Error Code:", firebaseError.code);
-      console.error("Firebase Error Message:", firebaseError.message);
       if (firebaseError.code === "storage/retry-limit-exceeded") {
         toast.error("Upload failed due to retry limit. Please try again later.");
       } else {
         toast.error("Failed to upload file.");
       }
-    } finally {
-      console.log("File upload process completed.");
     }
   };
 
@@ -106,7 +92,6 @@ export default function BackgroundPage() {
 
   const onSubmit = async (values: BackgroundFormValues) => {
     setIsSubmitting(true);
-    console.log("Form submission started.");
     try {
       if (values.file) {
         await handleFileUpload(values.file);
@@ -116,7 +101,6 @@ export default function BackgroundPage() {
       }
     } finally {
       setIsSubmitting(false);
-      console.log("Form submission completed.");
     }
   };
 
