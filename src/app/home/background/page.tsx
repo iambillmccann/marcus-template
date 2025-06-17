@@ -1,31 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { toast } from "sonner";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { toast } from "sonner";
+
 import { useAuth } from "@/context/authContext";
+import BackgroundForm from "@/components/forms/backgroundForm";
+
+const MAX_FILE_SIZE_MB = 5; // Set a file size limit of 5 MB
 
 interface BackgroundFormValues {
   file: File | null;
   biography: string;
 }
 
-const MAX_FILE_SIZE_MB = 5; // Set a file size limit of 5 MB
-
 export default function BackgroundPage() {
   const { user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const form = useForm<BackgroundFormValues>({
-    defaultValues: {
-      file: null,
-      biography: "",
-    },
-  });
 
   const handleFileUpload = async (file: File) => {
     if (!user) {
@@ -107,49 +99,7 @@ export default function BackgroundPage() {
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Background Submission</h1>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            name="file"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Upload File</FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    onChange={(e) => field.onChange(e.target.files?.[0] || null)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            name="biography"
-            control={form.control}
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Biography</FormLabel>
-                <FormControl>
-                  <textarea
-                    className="w-full p-2 border rounded-md"
-                    rows={5}
-                    placeholder="Write your biography here..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? "Submitting..." : "Submit"}
-          </Button>
-        </form>
-      </Form>
+      <BackgroundForm onSubmit={onSubmit} isSubmitting={isSubmitting} />
     </div>
   );
 }
