@@ -139,9 +139,11 @@ const BackgroundForm: React.FC<BackgroundFormProps> = ({ isSubmitting }) => {
                     )}
                 />
 
-                <Button type="submit" disabled={isSubmitting} className="w-full">
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                </Button>
+                <div className="flex justify-end space-x-4">
+                    <Button type="submit" disabled={isSubmitting} className="w-32 bg-blue-500 hover:bg-blue-600 text-white">
+                        {isSubmitting ? "Submitting..." : "Submit"}
+                    </Button>
+                </div>
             </form>
         </Form>
     );
