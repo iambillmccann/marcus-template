@@ -31,13 +31,13 @@ Each ID is followed by a three-digit number, incrementing within each category.
 
 ## Core Functionality
 
-#### Job Description Submission Interface
+#### Job Posting Submission Interface
 
 | Requirement ID | Description                                  | User Story | Expected Behavior/Outcome |
 |----------------|----------------------------------------------|------------|----------------------------|
 | CF001          | Paste or type job posting                    | As a user, I want to submit a job ad by pasting it into a text box. | A textarea should accept pasted or typed job ads. |
 | CF002          | Show confirmation or error message           | As a user, I want to know if the job ad was submitted successfully. | Upon submission, the system should display a success or error message. |
-| CF003          | Display submitted job ads                    | As a user, I want to review previously submitted job ads. | The UI should show a list of submitted ads with key metadata. |
+| CF003          | Display list of previously submitted job ads | As a user, I want to review previously submitted job ads. | The UI should show a list of submitted ads with key metadata. |
 | CF004          | Display company name                         | As a user, I want to confirm the job ad includes the company name. | Each listed job ad should show the parsed or provided company name. |
 | CF005          | Display job title                            | As a user, I want to verify the job title from the ad. | Each job ad should display a job title field. |
 | CF006          | Display upload date and time                 | As a user, I want to know when I submitted each job ad. | Each job entry should include a timestamp of submission. |
@@ -47,7 +47,7 @@ Each ID is followed by a three-digit number, incrementing within each category.
 
 | Requirement ID | Description                                  | User Story | Expected Behavior/Outcome |
 |----------------|----------------------------------------------|------------|----------------------------|
-| CF008          | Generate resume from uploaded job posting    | As a user, I want the system to generate a resume based on a job ad. | The user should be able to select a job ad and trigger resume generation. |
+| CF008          | Generate (unformatted) resume from uploaded job posting    | As a user, I want the system to generate a resume text based on a job ad. | The user should be able to select a job ad and trigger resume generation. |
 | CF009          | Show confirmation on resume generation       | As a user, I want immediate feedback that my resume generation request was received. | A success message or toast notification should confirm submission. |
 
 #### Resume Generation Status Tracking UI
