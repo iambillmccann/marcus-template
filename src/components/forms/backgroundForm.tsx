@@ -77,14 +77,18 @@ const BackgroundForm: React.FC<BackgroundFormProps> = ({ isSubmitting }) => {
         }
 
         try {
-            const db = getFirestore();
-            const userRef = doc(db, "users", user.uid);
-            await setDoc(
-                userRef,
-                { biography },
-                { merge: true }
-            );
+            const snippet = biography.slice(0, 20).replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+            const fileName = `${snippet}.txt`;
+
+            const storage = getStorage();
+            const storageRef = ref(storage, `uploads/${user.uid}/${fileName}`);
+            const blob = new Blob([biography], { type: "text/plain" });
+            await uploadBytes(storageRef, blob);
+
             toast.success("Biography submitted successfully.");
+
+            // Clear the biography field on successful upload
+            form.setValue("biography", "");
         } catch (error) {
             console.error("Error submitting biography:", error);
             toast.error("Failed to submit biography.");
