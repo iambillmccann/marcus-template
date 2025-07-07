@@ -41,3 +41,5 @@ export const reverseString = functions.https.onCall((data: any, context) => {
         ...(isPalindrome && { message: "Hey look, a palindrome!" })
     };
 });
+
+export { parseResumeToStructuredHistory } from './parseResumeToStructuredHistory';
