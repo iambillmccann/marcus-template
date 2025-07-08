@@ -47,3 +47,4 @@ next-env.d.ts
 # Python
 /venv
 functions/firebase-debug.log
+functions/firebase-debug.log
