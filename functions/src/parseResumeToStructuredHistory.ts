@@ -1,5 +1,6 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import * as mammoth from 'mammoth'; // Added for .docx extraction
 // import { getGeminiStructuredHistory } from '../lib'; // Gemini logic commented out for now
 
 // Initialize Firebase Admin if not already initialized
@@ -59,12 +60,21 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
         }
     }
 
-    // Download and combine file contents
+    // Download and combine file contents, handling .docx and .txt
     let corpus = '';
     for (const filePath of files) {
         const file = storage.bucket().file(filePath);
         const [contents] = await file.download();
-        corpus += contents.toString('utf-8') + '\n';
+        if (filePath.endsWith('.docx')) {
+            try {
+                const result = await mammoth.extractRawText({ buffer: contents });
+                corpus += result.value + '\n';
+            } catch (err) {
+                console.error(`Failed to extract .docx: ${filePath}`, err);
+            }
+        } else {
+            corpus += contents.toString('utf-8') + '\n';
+        }
     }
 
     // For now, just return the corpus for verification
