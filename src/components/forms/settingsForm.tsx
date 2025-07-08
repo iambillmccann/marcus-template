@@ -29,6 +29,7 @@ const SettingsForm: React.FC = () => {
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [idToken, setIdToken] = useState<string>("");
 
     const form = useForm({
         defaultValues: {
@@ -43,7 +44,7 @@ const SettingsForm: React.FC = () => {
 
     useEffect(() => {
         const auth = getAuth();
-        const unsubscribe = auth.onAuthStateChanged((user) => {
+        const unsubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
                 form.reset({
                     name: user.displayName || "",
@@ -57,6 +58,12 @@ const SettingsForm: React.FC = () => {
                     (provider) => provider.providerId !== "password"
                 );
                 setIsOAuthUser(isOAuth);
+
+                // Fetch and set ID token
+                const token = await user.getIdToken();
+                setIdToken(token);
+            } else {
+                setIdToken("");
             }
         });
 
@@ -169,6 +176,21 @@ const SettingsForm: React.FC = () => {
                         </FormItem>
                     )}
                 />
+
+                {/* ID Token Field */}
+                <FormItem>
+                    <FormLabel>ID Token</FormLabel>
+                    <FormControl>
+                        <textarea
+                            value={idToken}
+                            readOnly
+                            disabled
+                            rows={4}
+                            className="font-mono text-xs w-full resize-y bg-gray-100 dark:bg-gray-800 rounded border border-gray-300 dark:border-gray-700 p-2"
+                        />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
 
                 {/* Theme Field */}
                 <FormField
