@@ -66,12 +66,17 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
     for (const filePath of files) {
         const file = storage.bucket().file(filePath);
         const [contents] = await file.download();
+        
+        // Add document boundary marker
+        corpus += `\n--- DOCUMENT START: ${filePath} ---\n`;
+        
         if (filePath.endsWith('.docx')) {
             try {
                 const result = await mammoth.extractRawText({ buffer: contents });
                 corpus += result.value + '\n';
             } catch (err) {
                 console.error(`Failed to extract .docx: ${filePath}`, err);
+                corpus += `[ERROR: Failed to extract DOCX content from ${filePath}]\n`;
             }
         } else if (filePath.endsWith('.pdf')) {
             try {
@@ -79,10 +84,14 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
                 corpus += result.text + '\n';
             } catch (err) {
                 console.error(`Failed to extract .pdf: ${filePath}`, err);
+                corpus += `[ERROR: Failed to extract PDF content from ${filePath}]\n`;
             }
         } else {
             corpus += contents.toString('utf-8') + '\n';
         }
+        
+        // Add document boundary end marker
+        corpus += `--- DOCUMENT END: ${filePath} ---\n\n`;
     }
 
     // For now, just return the corpus for verification
