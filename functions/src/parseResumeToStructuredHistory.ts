@@ -66,10 +66,10 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
     for (const filePath of files) {
         const file = storage.bucket().file(filePath);
         const [contents] = await file.download();
-        
+
         // Add document boundary marker
         corpus += `\n--- DOCUMENT START: ${filePath} ---\n`;
-        
+
         if (filePath.endsWith('.docx')) {
             try {
                 const result = await mammoth.extractRawText({ buffer: contents });
@@ -89,7 +89,7 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
         } else {
             corpus += contents.toString('utf-8') + '\n';
         }
-        
+
         // Add document boundary end marker
         corpus += `--- DOCUMENT END: ${filePath} ---\n\n`;
     }
