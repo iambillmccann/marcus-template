@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as mammoth from 'mammoth'; // Added for .docx extraction
+import pdfParse from 'pdf-parse'; // Added for .pdf extraction
 // import { getGeminiStructuredHistory } from '../lib'; // Gemini logic commented out for now
 
 // Initialize Firebase Admin if not already initialized
@@ -60,21 +61,37 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
         }
     }
 
-    // Download and combine file contents, handling .docx and .txt
+    // Download and combine file contents, handling .docx, .pdf, and .txt
     let corpus = '';
     for (const filePath of files) {
         const file = storage.bucket().file(filePath);
         const [contents] = await file.download();
+
+        // Add document boundary marker
+        corpus += `\n--- DOCUMENT START: ${filePath} ---\n`;
+
         if (filePath.endsWith('.docx')) {
             try {
                 const result = await mammoth.extractRawText({ buffer: contents });
                 corpus += result.value + '\n';
             } catch (err) {
                 console.error(`Failed to extract .docx: ${filePath}`, err);
+                corpus += `[ERROR: Failed to extract DOCX content from ${filePath}]\n`;
+            }
+        } else if (filePath.endsWith('.pdf')) {
+            try {
+                const result = await pdfParse(contents);
+                corpus += result.text + '\n';
+            } catch (err) {
+                console.error(`Failed to extract .pdf: ${filePath}`, err);
+                corpus += `[ERROR: Failed to extract PDF content from ${filePath}]\n`;
             }
         } else {
             corpus += contents.toString('utf-8') + '\n';
         }
+
+        // Add document boundary end marker
+        corpus += `--- DOCUMENT END: ${filePath} ---\n\n`;
     }
 
     // For now, just return the corpus for verification
