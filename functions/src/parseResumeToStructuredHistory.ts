@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as mammoth from 'mammoth'; // Added for .docx extraction
 import pdfParse from 'pdf-parse'; // Added for .pdf extraction
-// import { getGeminiStructuredHistory } from '../lib'; // Gemini logic commented out for now
+import { parseContactInformation } from './lib'; // Gemini logic for parsing contact info
 
 // Initialize Firebase Admin if not already initialized
 if (!admin.apps.length) {
@@ -29,7 +29,12 @@ function extractPayload(data: any) {
 }
 
 /**
- * Callable Cloud Function to parse uploaded resume files into a single corpus string.
+ * Callable Cloud Function to parse uploaded resume files into structured contact information using Gemini AI.
+ *
+ * This function:
+ * 1. Retrieves uploaded files from Firebase Storage (supports .txt, .docx, .pdf)
+ * 2. Combines them into a single corpus with document boundaries
+ * 3. Uses Gemini AI to extract contact information in a structured JSON format
  *
  * NOTE: The Firebase emulator and SDK may wrap the payload differently.
  * - In production, the payload is { userId, ... }.
@@ -94,6 +99,23 @@ export const parseResumeToStructuredHistory = functions.https.onCall(async (data
         corpus += `--- DOCUMENT END: ${filePath} ---\n\n`;
     }
 
-    // For now, just return the corpus for verification
-    return { corpus };
+    // Parse the corpus using Gemini AI to extract contact information
+    console.log('Calling Gemini to parse contact information...');
+    console.log('Corpus length:', corpus.length);
+    console.log('Corpus preview (first 500 chars):', corpus.substring(0, 500));
+
+    try {
+        const contactInfo = await parseContactInformation(corpus);
+        console.log('Gemini parsing complete:', JSON.stringify(contactInfo, null, 2));
+
+        // Return the structured contact information
+        return contactInfo;
+    } catch (error) {
+        console.error('Gemini parsing failed:', error);
+        // Return both corpus and error for debugging
+        return {
+            error: `Gemini parsing failed: ${error}`,
+            corpus: corpus.substring(0, 1000) + '...' // Truncated for debugging
+        };
+    }
 });
