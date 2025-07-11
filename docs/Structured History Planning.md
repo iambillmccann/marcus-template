@@ -19,6 +19,22 @@
 - **Prompt Engineering**:
   - Craft prompts to guide the LLM in structuring the data accurately.
   - Include instructions for merging duplicates (e.g., duplicate job entries) and cleaning up inconsistencies (e.g., date formats).
+  - The prompt shall return four json objects from the corpus of uploaded data. These objects are:
+    - contactInfo (Contact Informations)
+    - jobHistory (History of jobs in the user's career)
+    - education
+    - skills
+  - The contactInformation shall be parsed into a json object of the following form:
+
+    ```json
+       {
+        "contactInformation": {
+          "fullName": "<string representing the user's name>",
+          "email": ["<email 1>", "<email 3>", ...],
+          "phones": ["<phone 1>", "<phone 2>", ...]
+        }
+       }
+    ```
 
 ---
 
@@ -29,6 +45,7 @@
     - `users/{userId}/structuredHistory/contactInfo`
     - `users/{userId}/structuredHistory/jobHistory`
     - `users/{userId}/structuredHistory/education`
+    - `users/{userId}/structuredHistory/skills`
 
 ---
 
