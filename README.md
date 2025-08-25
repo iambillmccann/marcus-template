@@ -1,10 +1,27 @@
----
+## Start from this template
 
-## 🧑‍💻 Getting Started: Local Development Setup
+You have two options when you’re ready to build a new app from **marcus-template**:
+
+### Option A — GitHub UI
+1. Go to the template repo: `iambillmccann/marcus-template`.
+2. Click **Use this template → Create a new repository**.
+3. Name your repo, pick visibility, and (if needed) check **Include all branches**.
+4. Create the repo, then **clone your new repo** locally and start coding.
+
+### Option B — GitHub CLI
+```bash
+# Replace ORG/REPO with where the new app should live
+gh repo create ORG/REPO \
+  --template iambillmccann/marcus-template \
+  --private --clone
+cd REPO
+```
+
+
+## Getting Started: Local Development Setup
 
 Follow these steps to set up your local development environment for the project.
 
----
 
 ### **Step 1: Clone the Repository**
 
