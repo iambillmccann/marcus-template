@@ -48,6 +48,17 @@ export function LoginForm({
             onLogin();
             router.push("/home");
         } catch (err: unknown) {
+            // If user closes the popup or cancels a popup request, do not show any error
+            if (
+                typeof err === "object" &&
+                err !== null &&
+                "code" in err &&
+                ((err as { code: string }).code === "auth/popup-closed-by-user" ||
+                    (err as { code: string }).code === "auth/cancelled-popup-request")
+            ) {
+                // Silently ignore
+                return;
+            }
             toast.error("Failed to sign in with Google. Please try again.");
             console.error("Google sign-in error:", err);
         }
